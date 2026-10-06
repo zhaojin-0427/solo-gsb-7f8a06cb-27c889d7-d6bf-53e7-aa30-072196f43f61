@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>板材横切排样优化</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>板材横切排样优化</h1>
+    <p>从上向下横切出行条，再在每行内从左向右纵切零件；目标：入选总面积最大 → 切割次数最少 → 入选 ID 字典序最小。</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>输入参数</h2>
+      <form id="plan-form" novalidate>
+        <fieldset>
+          <legend>板材</legend>
+          <div class="field-row">
+            <label>宽度（100～3000 mm）
+              <input type="number" id="board-width" min="100" max="3000" step="1" value="1000">
+            </label>
+            <label>高度（100～3000 mm）
+              <input type="number" id="board-height" min="100" max="3000" step="1" value="800">
+            </label>
+            <label>锯缝（0～10 mm 整数）
+              <input type="number" id="kerf" min="0" max="10" step="1" value="3">
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>零件（1～7 件，ID 唯一，宽高为正整数，每件可旋转 90°）</legend>
+          <table id="parts-table">
+            <thead>
+              <tr><th>ID</th><th>宽（mm）</th><th>高（mm）</th><th></th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <button type="button" id="add-part" class="btn-secondary">＋ 添加零件</button>
+        </fieldset>
+
+        <div id="form-errors" class="errors" hidden></div>
+        <button type="submit" class="btn-primary">求解排样方案</button>
+      </form>
+    </section>
+
+    <section class="card" id="result-section" hidden>
+      <h2>排样结果</h2>
+      <div id="summary"></div>
+
+      <h3>排样图（按比例绘制，红色为锯缝，斜线为余料）</h3>
+      <div id="drawing"></div>
+
+      <h3>切割顺序</h3>
+      <ol id="cuts-list"></ol>
+
+      <h3>余料</h3>
+      <ul id="leftover-list"></ul>
+
+      <h3>零件明细</h3>
+      <table id="parts-result-table">
+        <thead>
+          <tr><th>ID</th><th>X (mm)</th><th>Y (mm)</th><th>宽 (mm)</th><th>高 (mm)</th><th>方向</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
